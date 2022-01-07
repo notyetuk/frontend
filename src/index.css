@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.button {
+  @apply rounded-md px-5 py-2
+}
+
+.button-primary {
+  @apply button bg-sky-300 text-white font-bold hover:bg-sky-400 active:bg-sky-500
+}
