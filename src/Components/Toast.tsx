@@ -1,11 +1,17 @@
 export function Toast(props: any) {
+
+  // clearTimeout();
+  // setTimeout(() => {
+  //   props.closeToast();
+  // }, 6000);
+
   if (props.show) {
     return (
       <>
         <div
-          className={`absolute top-5 left-5 px-5 py-2 bg-opacity-50 rounded-md shadow border-2 cursor-pointer
-        ${props.type === 'success' ? 'bg-emerald-400 border-emerald-500' : ''}
-        ${props.type === 'error' ? 'bg-red-400 border-red-500' : ''}`}
+          className={`absolute top-5 left-1/2 -translate-x-1/2 px-10 py-4 bg-white rounded-md shadow-lg border cursor-pointer border-slate-400
+        ${props.type === 'success' ? 'text-green-600' : ''}
+        ${props.type === 'error' ? 'text-red-600' : ''}`}
           onClick={props.closeToast}
         >
           {props.text}

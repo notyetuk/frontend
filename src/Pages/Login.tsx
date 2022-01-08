@@ -17,11 +17,11 @@ export function Login() {
     setToastMessage(message);
     setToastType(type);
     setToastShow(show);
-  }
+  };
 
   const handleCloseToast = () => {
     setToastShow(false);
-  }
+  };
 
   const API = import.meta.env.VITE_API;
 
@@ -37,7 +37,7 @@ export function Login() {
       return handleToast(e.response.data.message, 'error', true);
     });
 
-    if(response) {
+    if (response) {
       handleToast(response.data.message, 'success', true);
 
       UserStore.username = response.data.username;
@@ -46,12 +46,18 @@ export function Login() {
 
       location.href = '/';
     }
-  }
+  };
 
   return (
     <>
       <Layout>
-        <Toast text={toastMessage} type={toastType} show={toastShow} closeToast={handleCloseToast}/>
+        <Toast
+          text={toastMessage}
+          type={toastType}
+          show={toastShow}
+          closeToast={handleCloseToast}
+        />
+        <div className="text-2xl mb-10">Login to manage your lists.</div>
         <form className="w-2/3 md:w-3/4 mx-auto" onSubmit={handleSubmit}>
           <div className="flex flex-col space-y-2">
             <Input
