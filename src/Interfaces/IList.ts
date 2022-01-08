@@ -4,4 +4,5 @@ export interface IList {
   createdAt: Date;
   cover: string;
   handleDelete?: (id?: string) => Promise<any>;
+  handleEdit?: (id?: string) => Promise<any>;
 }

@@ -26,6 +26,11 @@ export function Items() {
   async function addItem(e: BaseSyntheticEvent) {
     e.preventDefault();
 
+    // TODO: TEMP
+    if (!title || !url || !image) {
+      return alert('fill all details');
+    }
+
     const newItem: IItem = {
       list: id,
       title: title,

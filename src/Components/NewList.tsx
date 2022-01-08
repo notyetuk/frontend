@@ -13,14 +13,15 @@ export function NewList(props: any) {
   }
 
   function handleSubmit() {
+
+    // TODO: TEMP
+    if (!title || !cover) {
+      return alert('fill all details');
+    }
+    
     props.handleClick(newList);
     setTitle('');
     setCover('');
-    reset();
-  }
-
-  function reset() {
-    console.log('reset')
   }
 
   return (
@@ -30,11 +31,13 @@ export function NewList(props: any) {
           handleChange={(e) => setTitle(e.target.value)}
           placeholder="List title"
           value={title}
+          required={true}
         />
         <Input
           handleChange={(e) => setCover(e.target.value)}
           placeholder="List cover"
           value={cover}
+          required={true}
         />
         <button
           className="button-primary mb-5"

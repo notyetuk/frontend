@@ -8,10 +8,14 @@ import { NewList } from '../Components/NewList';
 import axios from 'axios';
 import { ConfigStore as $global } from '../Stores/ConfigStore';
 import { Headers } from '../Services/RequestService';
+import { Modal } from '../Components/Modal';
+import { Input } from '../Components/Input';
 
 export function Lists() {
   const [loading, setLoading] = useState(true);
   const [lists, setLists] = useState<IList[]>([]);
+  const [showModal, setShowModal] = useState(false);
+  const [currentList, setCurrentList] = useState<IList>();
 
   useEffect(() => {
     fetchLists().then((l) => {
@@ -24,7 +28,6 @@ export function Lists() {
     const { data } = await axios.post(`${$global.API}/list`, newList, {
       headers: Headers,
     });
-    console.log(data.message);
     setLists([data.list, ...lists]);
   }
 
@@ -32,15 +35,22 @@ export function Lists() {
     const { data } = await axios.delete(`${$global.API}/list/${id}`, {
       headers: Headers,
     });
-    console.log(data.message);
     setLists(lists.filter((l) => l._id !== id));
+  }
+
+  async function editList(list: IList) {
+    setCurrentList(list);
+    setShowModal(true);
+  }
+
+  function handleModal() {
+    setShowModal(false);
   }
 
   return (
     <>
       <Layout>
         <NewList handleClick={addList} />
-
         {loading ? (
           <div className="w-5 mx-auto">
             <Spinner />
@@ -56,10 +66,30 @@ export function Lists() {
               createdAt={l.createdAt}
               cover={l.cover}
               handleDelete={() => deleteList(l._id)}
+              handleEdit={() => editList(l)}
             />
           ))
         )}
       </Layout>
+      {showModal ? (
+        <Modal handleModal={handleModal}>
+          <div className="flex flex-col space-y-2">
+            <div className='mb-4 text-xl'>Editing the list.</div>
+            <Input
+              handleChange={(e) => console.log(e)}
+              placeholder="New list title"
+              value={currentList!.title}
+              required={true}
+            />
+            <Input
+              handleChange={(e) => console.log(e)}
+              placeholder="New list cover"
+              value={currentList!.cover}
+              required={true}
+            />
+          </div>
+        </Modal>
+      ) : null}
     </>
   );
 }
