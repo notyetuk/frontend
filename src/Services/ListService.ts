@@ -10,6 +10,14 @@ async function fetchLists(): Promise<any> {
   return response.data;
 }
 
+async function fetchItems(listId: any): Promise<any> {
+  const response: any = await axios.get(`${API}/list/${listId}`, {
+    headers: Headers
+  })
+  return response.data;
+}
+
 export {
-  fetchLists
+  fetchLists,
+  fetchItems
 }

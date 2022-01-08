@@ -51,6 +51,7 @@ export function Lists() {
           lists.map((l: IList) => (
             <List
               key={l._id}
+              _id={l._id}
               title={l.title}
               createdAt={l.createdAt}
               cover={l.cover}
