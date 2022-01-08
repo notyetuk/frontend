@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Nav } from "../Components/Nav";
 import { authenticate } from "../Services/AuthService";
-import { UserStore } from "../Store/UserStore";
+import { UserStore } from "../Stores/UserStore";
 
 
 export function Layout({ children }: any) {

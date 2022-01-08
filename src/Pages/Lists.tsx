@@ -6,7 +6,7 @@ import { IList } from '../Interfaces/IList';
 import { Spinner } from '../Icons/Spinner';
 import { NewList } from '../Components/NewList';
 import axios from 'axios';
-import { ConfigStore as $global } from '../Store/ConfigStore';
+import { ConfigStore as $global } from '../Stores/ConfigStore';
 import { Headers } from '../Services/RequestService';
 
 export function Lists() {

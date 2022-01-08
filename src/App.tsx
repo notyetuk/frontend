@@ -5,7 +5,7 @@ import {Register} from './Pages/Register';
 import {Home} from './Pages/Home';
 import {Lists} from "./Pages/Lists";
 import {authenticate} from "./Services/AuthService";
-import {UserStore} from "./Store/UserStore";
+import {UserStore} from "./Stores/UserStore";
 
 export function App() {
 

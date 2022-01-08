@@ -4,7 +4,7 @@ import { Input } from '../Components/Input';
 import { Layout } from './Layout';
 import axios from 'axios';
 import { Toast } from '../Components/Toast';
-import { UserStore } from '../Store/UserStore';
+import { UserStore } from '../Stores/UserStore';
 
 export function Login() {
   const [username, setUsername] = useState();

@@ -1,5 +1,5 @@
 import axios from "axios";
-import {UserStore} from "../Store/UserStore";
+import {UserStore} from "../Stores/UserStore";
 
 export async function authenticate(): Promise<any> {
   const API = import.meta.env.VITE_API;
