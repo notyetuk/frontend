@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  @apply bg-slate-200
+}
+
 .button {
   @apply rounded-md px-5 py-2
 }

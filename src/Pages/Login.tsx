@@ -4,6 +4,7 @@ import { Input } from '../Components/Input';
 import { Layout } from './Layout';
 import axios from 'axios';
 import { Toast } from '../Components/Toast';
+import { UserStore } from '../Store/UserStore';
 
 export function Login() {
   const [username, setUsername] = useState();
@@ -38,6 +39,12 @@ export function Login() {
 
     if(response) {
       handleToast(response.data.message, 'success', true);
+
+      UserStore.username = response.data.username;
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('username', response.data.username);
+
+      location.href = '/';
     }
   }
 

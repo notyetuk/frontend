@@ -1,10 +1,6 @@
-interface Props {
-  handleChange: (e: any) => void;
-  placeholder: string;
-  type?: string;
-}
+import { IInput } from "../Interfaces/IInput";
 
-export function Input(props: Props) {
+export function Input(props: IInput) {
 
   return (
     <>
