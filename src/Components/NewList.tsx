@@ -40,7 +40,7 @@ export function NewList(props: any) {
           required={true}
         />
         <button
-          className="button-primary mb-5"
+          className="button button-primary mb-5"
           type="button"
           onClick={handleSubmit}
         >

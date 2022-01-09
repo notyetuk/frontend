@@ -12,14 +12,14 @@ export function List(list: IList) {
   return (
     <div className="flex p-3 space-x-3 rounded-md border border-slate-300 bg-slate-50 text-left mb-2 relative">
       <div className='absolute right-3 flex space-x-2'>
-        {/* <button
-          className="bg-teal-500 text-white p-1 rounded-full outline-none"
+        <button
+          className="button-success text-white p-1 rounded-full outline-none"
           onClick={() => list.handleEdit!(list._id)}
         >
           <Edit classes="w-4 h-4" />
-        </button> */}
+        </button>
         <button
-          className="bg-red-500 text-white p-1 rounded-full outline-none"
+          className="button-error text-white p-1 rounded-full outline-none"
           onClick={() => list.handleDelete!(list._id)}
         >
           <Bin classes="w-4 h-4" />

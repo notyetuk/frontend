@@ -71,7 +71,7 @@ export function Login() {
               placeholder={'Password.'}
               value={password}
             />
-            <Button label="Login" class="button-primary" />
+            <Button label="Login" class="button button-primary" />
           </div>
         </form>
       </Layout>

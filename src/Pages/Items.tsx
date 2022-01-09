@@ -77,7 +77,7 @@ export function Items() {
               value={image}
               handleChange={(e) => setImage(e.target.value)}
             />
-            <button className="button-primary" onClick={(e) => addItem(e)}>
+            <button className="button button-primary" onClick={(e) => addItem(e)}>
               Add Item
             </button>
           </form>

@@ -77,7 +77,7 @@ export function Register() {
               value={password}
               required={true}
             />
-            <Button label="Register" class="button-primary" />
+            <Button label="Register" class="button button-primary" />
           </div>
         </form>
       </Layout>

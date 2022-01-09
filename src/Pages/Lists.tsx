@@ -10,6 +10,7 @@ import { ConfigStore as $global } from '../Stores/ConfigStore';
 import { Headers } from '../Services/RequestService';
 import { Modal } from '../Components/Modal';
 import { Input } from '../Components/Input';
+import { Button } from '../Components/Button';
 
 export function Lists() {
   const [loading, setLoading] = useState(true);
@@ -39,8 +40,34 @@ export function Lists() {
   }
 
   async function editList(list: IList) {
+    setEditTitle(list.title);
+    setEditCover(list.cover);
     setCurrentList(list);
     setShowModal(true);
+  }
+
+  const [editTitle, setEditTitle] = useState('');
+  const [editCover, setEditCover] = useState('');
+  async function saveList() {
+    const { data } = await axios.put(
+      `${$global.API}/list/${currentList!._id}`,
+      {
+        editTitle,
+        editCover,
+      },
+      {
+        headers: Headers,
+      }
+    );
+    const newList = data.list[0];
+    lists.map((l) => {
+      if (l._id === newList._id) {
+        l.title = newList.title;
+        l.cover = newList.cover;
+      }
+    });
+
+    handleModal();
   }
 
   function handleModal() {
@@ -74,19 +101,28 @@ export function Lists() {
       {showModal ? (
         <Modal handleModal={handleModal}>
           <div className="flex flex-col space-y-2">
-            <div className='mb-4 text-xl'>Editing the list.</div>
+            <div className="mb-4 text-xl">Editing the list.</div>
             <Input
-              handleChange={(e) => console.log(e)}
+              handleChange={(e) => setEditTitle(e.target.value)}
               placeholder="New list title"
-              value={currentList!.title}
+              value={editTitle}
               required={true}
             />
             <Input
-              handleChange={(e) => console.log(e)}
+              handleChange={(e) => setEditCover(e.target.value)}
               placeholder="New list cover"
-              value={currentList!.cover}
+              value={editCover}
               required={true}
             />
+            <div className="flex space-x-2">
+              <button className="button button-success" onClick={saveList}>
+                Save
+              </button>
+              <button className="button button-plain" onClick={handleModal}>
+                Close
+              </button>
+              {/* <Button class="button button-success" label="Save" /> */}
+            </div>
           </div>
         </Modal>
       ) : null}
