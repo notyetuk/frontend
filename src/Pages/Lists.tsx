@@ -10,7 +10,6 @@ import { ConfigStore as $global } from '../Stores/ConfigStore';
 import { Headers } from '../Services/RequestService';
 import { Modal } from '../Components/Modal';
 import { Input } from '../Components/Input';
-import { Button } from '../Components/Button';
 
 export function Lists() {
   const [loading, setLoading] = useState(true);
@@ -22,6 +21,7 @@ export function Lists() {
     fetchLists().then((l) => {
       setLists(l.lists);
       setLoading(false);
+      console.log(l);
     });
   }, [null]);
 
@@ -90,6 +90,7 @@ export function Lists() {
               key={l._id}
               _id={l._id}
               title={l.title}
+              total={l.total}
               createdAt={l.createdAt}
               cover={l.cover}
               handleDelete={() => deleteList(l._id)}

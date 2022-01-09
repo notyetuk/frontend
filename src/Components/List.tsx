@@ -11,7 +11,7 @@ export function List(list: IList) {
 
   return (
     <div className="flex p-3 space-x-3 rounded-md border border-slate-300 bg-slate-50 text-left mb-2 relative">
-      <div className='absolute right-3 flex space-x-2'>
+      <div className="absolute right-3 flex space-x-2">
         <button
           className="button-success text-white p-1 rounded-full outline-none"
           onClick={() => list.handleEdit!(list._id)}
@@ -32,7 +32,12 @@ export function List(list: IList) {
         <div onClick={openList}>
           <div className="text-2xl cursor-pointer">{list.title}</div>
         </div>
-        <div>Added on {new Date(list.createdAt).toLocaleDateString()}</div>
+        <div>
+          Total: £{list.total === '0' ? '0' : list.total}
+        </div>
+        <div className="text-sm">
+          Added on {new Date(list.createdAt).toLocaleDateString()}
+        </div>
       </div>
     </div>
   );

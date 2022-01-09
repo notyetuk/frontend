@@ -18,7 +18,12 @@ export function Item(item: IItem) {
             {item.title}
           </a>
         </div>
-        <div>Added on {new Date(item.createdAt).toLocaleDateString()}</div>
+        <div>
+          £ {item.price}
+        </div>
+        <div className="text-sm">
+          Added on {new Date(item.createdAt).toLocaleDateString()}
+        </div>
       </div>
     </div>
   );

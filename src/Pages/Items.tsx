@@ -8,32 +8,37 @@ import { Input } from '../Components/Input';
 import axios from 'axios';
 import { ConfigStore as $global } from '../Stores/ConfigStore';
 import { Headers } from '../Services/RequestService';
+import { Spinner } from '../Icons/Spinner';
 
 export function Items() {
   const { id } = useParams<string>();
   const [items, setItems] = useState<IItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchItems(id).then((r) => {
       setItems(r.items);
+      setLoading(false);
     });
   }, [null]);
 
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
   const [image, setImage] = useState('');
+  const [price, setPrice] = useState(0);
 
   async function addItem(e: BaseSyntheticEvent) {
     e.preventDefault();
 
     // TODO: TEMP
-    if (!title || !url || !image) {
+    if (!title || !url || !image || !price) {
       return alert('fill all details');
     }
 
     const newItem: IItem = {
       list: id,
       title: title,
+      price: price,
       url: url,
       image: image,
       createdAt: new Date(),
@@ -46,6 +51,7 @@ export function Items() {
     setItems([data.item, ...items]);
 
     setTitle('');
+    setPrice(0);
     setUrl('');
     setImage('');
   }
@@ -72,29 +78,46 @@ export function Items() {
               value={url}
               handleChange={(e) => setUrl(e.target.value)}
             />
+            <div className="text-left">
+              <Input
+                placeholder="Price ££"
+                value={price}
+                handleChange={(e) => setPrice(e.target.value)}
+              />
+            </div>
             <Input
               placeholder="Item image."
               value={image}
               handleChange={(e) => setImage(e.target.value)}
             />
-            <button className="button button-primary" onClick={(e) => addItem(e)}>
+            <button
+              className="button button-primary"
+              onClick={(e) => addItem(e)}
+            >
               Add Item
             </button>
           </form>
         </div>
 
-        {items.length === 0
-          ? 'You have no items on your list.'
-          : items.map((i: IItem) => (
-              <Item
-                key={i._id}
-                title={i.title}
-                url={i.url}
-                image={i.image}
-                createdAt={i.createdAt}
-                handleDelete={() => deleteItem(i._id)}
-              />
-            ))}
+        {loading ? (
+          <div className="w-5 mx-auto">
+            <Spinner />
+          </div>
+        ) : items.length === 0 ? (
+          'You have no items on your list.'
+        ) : (
+          items.map((i: IItem) => (
+            <Item
+              key={i._id}
+              title={i.title}
+              price={i.price}
+              url={i.url}
+              image={i.image}
+              createdAt={i.createdAt}
+              handleDelete={() => deleteItem(i._id)}
+            />
+          ))
+        )}
       </Layout>
     </>
   );
