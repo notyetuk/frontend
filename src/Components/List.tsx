@@ -7,9 +7,11 @@ import axios from 'axios';
 import { ConfigStore as $global } from '../Stores/ConfigStore';
 import { Headers } from '../Services/RequestService';
 import { useState } from 'react';
+import { Toast } from './Toast';
 
 export function List(list: IList) {
   const [isPrivate, setIsPrivate] = useState(list.isPrivate);
+  const [toastShow, setToastShow] = useState(false);
 
   const navigate = useNavigate();
   function openList() {
@@ -27,46 +29,61 @@ export function List(list: IList) {
       }
     );
     setIsPrivate(!isPrivate);
+    setToastShow(true);
+  }
+
+  function handleCloseToast() {
+    setToastShow(false);
   }
 
   return (
-    <div className="flex p-3 space-x-3 rounded-md border border-slate-300 bg-slate-50 text-left mb-2 relative">
-      <div className="absolute right-3 flex space-x-2">
-        <button
-          className="button-plain p-1 rounded-full outline-none"
-          onClick={setPrivate}
-        >
-          {isPrivate ? (
-            <LockClosed classes="w-4 h-4" />
-          ) : (
-            <LockOpen classes="w-4 h-4" />
-          )}
-        </button>
-        <button
-          className="button-success text-white p-1 rounded-full outline-none"
-          onClick={() => list.handleEdit!(list._id)}
-        >
-          <Edit classes="w-4 h-4" />
-        </button>
-        <button
-          className="button-error text-white p-1 rounded-full outline-none"
-          onClick={() => list.handleDelete!(list._id)}
-        >
-          <Bin classes="w-4 h-4" />
-        </button>
-      </div>
-      <div className="w-1/4">
-        <img src={list.cover} onClick={openList} className="cursor-pointer" />
-      </div>
-      <div className="flex flex-col space-y-2">
-        <div onClick={openList}>
-          <div className="text-2xl cursor-pointer">{list.title}</div>
+    <>
+      {toastShow ? (
+        <Toast
+          type="info"
+          text={`Made list ${isPrivate ? 'private' : 'public'}`}
+          show={toastShow}
+          closeToast={handleCloseToast}
+        />
+      ) : null}
+      <div className="flex p-3 space-x-3 rounded-md border border-slate-300 bg-slate-50 text-left mb-2 relative">
+        <div className="absolute right-3 flex space-x-2">
+          <button
+            className="button-plain p-1 rounded-full outline-none"
+            onClick={setPrivate}
+          >
+            {isPrivate ? (
+              <LockClosed classes="w-4 h-4" />
+            ) : (
+              <LockOpen classes="w-4 h-4" />
+            )}
+          </button>
+          <button
+            className="button-success text-white p-1 rounded-full outline-none"
+            onClick={() => list.handleEdit!(list._id)}
+          >
+            <Edit classes="w-4 h-4" />
+          </button>
+          <button
+            className="button-error text-white p-1 rounded-full outline-none"
+            onClick={() => list.handleDelete!(list._id)}
+          >
+            <Bin classes="w-4 h-4" />
+          </button>
         </div>
-        <div>Total: £{!list.total ? '0' : list.total}</div>
-        <div className="text-sm">
-          Added on {new Date(list.createdAt).toLocaleDateString()}
+        <div className="w-1/4">
+          <img src={list.cover} onClick={openList} className="cursor-pointer" />
+        </div>
+        <div className="flex flex-col space-y-2">
+          <div onClick={openList}>
+            <div className="text-2xl cursor-pointer">{list.title}</div>
+          </div>
+          <div>Total: £{!list.total ? '0' : list.total}</div>
+          <div className="text-sm">
+            Added on {new Date(list.createdAt).toLocaleDateString()}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
