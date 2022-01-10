@@ -125,6 +125,7 @@ export function Items(props: any) {
               image={i.image}
               createdAt={i.createdAt}
               handleDelete={() => deleteItem(i._id)}
+              isShared={props.isShared}
             />
           ))
         )}

@@ -7,4 +7,5 @@ export interface IItem {
   image: string;
   createdAt: Date;
   handleDelete?: (itemId?: string) => void;
+  isShared?: boolean;
 }
