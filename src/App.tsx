@@ -14,9 +14,9 @@ export function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        <Route path="/lists" element={<Lists />} />
-        <Route path="/lists/:id" element={<Items />} />
-        <Route path="/lists/s/:id" element={<Items isShared="true" />} />
+        <Route path="/list" element={<Lists />} />
+        <Route path="/list/:id" element={<Items />} />
+        <Route path="/list/s/:id" element={<Items isShared="true" />} />
 
         <Route path="*" element={<NotFound />} />
       </Routes>

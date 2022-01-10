@@ -18,7 +18,7 @@ export function List(list: IList) {
 
   const navigate = useNavigate();
   function openList() {
-    navigate(`/lists/${list._id}`);
+    navigate(`/list/${list._id}`);
   }
 
   async function setPrivate() {
@@ -43,7 +43,7 @@ export function List(list: IList) {
   function copyShareableLink() {
     setToastShow(true);
     setToastText('Copied shareable link to clipboard.');
-    navigator.clipboard.writeText(`${$global.URL}/lists/s/${list._id}`);
+    navigator.clipboard.writeText(`${$global.URL}/list/s/${list._id}`);
   }
 
   return (
@@ -104,7 +104,7 @@ export function List(list: IList) {
             <>
               <Input
                 type="text"
-                value={`${$global.URL}/lists/s/${list._id}`}
+                value={`${$global.URL}/list/s/${list._id}`}
                 disabled={true}
                 classes="w-full"
               />

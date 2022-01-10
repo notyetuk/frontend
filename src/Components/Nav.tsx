@@ -22,7 +22,7 @@ export function Nav({ user }: any) {
             <Link to="/register">Register</Link>
           </>
         ) : (
-            <Link to="/lists">Lists</Link>
+            <Link to="/list">Lists</Link>
         )}
       </div>
       {!user ? null : (
