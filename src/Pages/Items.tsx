@@ -63,6 +63,25 @@ export function Items(props: any) {
     setImage('');
   }
 
+  async function saveItem(newData?: any) {
+    // setItems([newData, ...items]);
+    const { data } = await axios.put(
+      `${$global.API}/item/save/${newData.id}`,
+      newData,
+      {
+        headers: Headers,
+      }
+    );
+
+    const item: IItem = data.item[0];
+    for (let i in items) {
+      if (item._id === items[i]._id) {
+        items.splice(parseInt(i), 1, item);
+      }
+    }
+    setItems([...items]);
+  }
+
   async function deleteItem(itemId?: string) {
     const { data } = await axios.delete(`${$global.API}/item/${itemId}`, {
       headers: Headers,
@@ -119,6 +138,7 @@ export function Items(props: any) {
           items.map((i: IItem) => (
             <Item
               key={i._id}
+              _id={i._id}
               title={i.title}
               price={i.price}
               url={i.url}
@@ -126,6 +146,7 @@ export function Items(props: any) {
               createdAt={i.createdAt}
               handleDelete={() => deleteItem(i._id)}
               isShared={props.isShared}
+              handleSave={saveItem}
             />
           ))
         )}

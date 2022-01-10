@@ -8,4 +8,5 @@ export interface IItem {
   createdAt: Date;
   handleDelete?: (itemId?: string) => void;
   isShared?: boolean;
+  handleSave?: (newData?: any) => void;
 }

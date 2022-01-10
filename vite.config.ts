@@ -11,7 +11,7 @@ import react from '@vitejs/plugin-react';
 const mode = 'production';
 
 export default defineConfig({
-  root: mode === 'production' ? './build' : '',
+  // root: mode === 'production' ? './build' : '',
   build: {
     outDir: 'build',
   },
