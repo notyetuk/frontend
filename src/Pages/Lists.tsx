@@ -21,7 +21,6 @@ export function Lists() {
     fetchLists().then((l) => {
       setLists(l.lists);
       setLoading(false);
-      console.log(l);
     });
   }, [null]);
 
@@ -59,7 +58,7 @@ export function Lists() {
         headers: Headers,
       }
     );
-    const newList = data.list[0];
+    const newList: IList = data.list[0];
     lists.map((l) => {
       if (l._id === newList._id) {
         l.title = newList.title;
@@ -93,6 +92,7 @@ export function Lists() {
               total={l.total}
               createdAt={l.createdAt}
               cover={l.cover}
+              isPrivate={l.isPrivate}
               handleDelete={() => deleteList(l._id)}
               handleEdit={() => editList(l)}
             />

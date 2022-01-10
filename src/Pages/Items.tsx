@@ -25,7 +25,7 @@ export function Items() {
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
   const [image, setImage] = useState('');
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState('');
 
   async function addItem(e: BaseSyntheticEvent) {
     e.preventDefault();
@@ -51,7 +51,7 @@ export function Items() {
     setItems([data.item, ...items]);
 
     setTitle('');
-    setPrice(0);
+    setPrice('');
     setUrl('');
     setImage('');
   }
@@ -80,6 +80,7 @@ export function Items() {
             />
             <div className="text-left">
               <Input
+                type="number"
                 placeholder="Price ££"
                 value={price}
                 handleChange={(e) => setPrice(e.target.value)}
