@@ -4,7 +4,7 @@ export interface IList {
   total?: string;
   createdAt: Date;
   cover: string;
-  isPrivate: boolean;
+  isPrivate?: boolean;
   handleDelete?: (id?: string) => Promise<any>;
   handleEdit?: (id?: string) => Promise<any>;
   handlePrivacy?: (id?: string, privacy?: boolean) => Promise<any>;
