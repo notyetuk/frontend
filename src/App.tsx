@@ -16,6 +16,7 @@ export function App() {
 
         <Route path="/lists" element={<Lists />} />
         <Route path="/lists/:id" element={<Items />} />
+        <Route path="/lists/s/:id" element={<Items isShared="true" />} />
 
         <Route path="*" element={<NotFound />} />
       </Routes>

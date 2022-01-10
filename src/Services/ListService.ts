@@ -10,14 +10,20 @@ async function fetchLists(): Promise<any> {
   return response.data;
 }
 
-async function fetchItems(listId: any): Promise<any> {
+async function fetchItems(listId: string): Promise<any> {
   const response: any = await axios.get(`${API}/list/${listId}`, {
     headers: Headers
   })
   return response.data;
 }
 
+async function fetchShareableList(listId: string): Promise<any> {
+  const response: any = await axios.get(`${API}/share/l/${listId}`);
+  return response.data;
+}
+
 export {
   fetchLists,
-  fetchItems
+  fetchItems,
+  fetchShareableList
 }
