@@ -60,7 +60,9 @@ export function Item(item: IItem) {
         </div>
         <div className="flex flex-col space-y-2">
           <div className="text-2xl cursor-pointer">
-            <a target="_blank">{item.title}</a>
+            <a href={item.url} target="_blank">
+              {item.title}
+            </a>
           </div>
           <div>£ {item.price}</div>
           <div className="text-sm">
