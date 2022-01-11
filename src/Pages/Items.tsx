@@ -89,42 +89,67 @@ export function Items(props: any) {
     setItems(items.filter((i) => i._id !== itemId));
   }
 
+  const [showForm, setShowForm] = useState<boolean>(false);
+  const form = document.getElementById('form');
+
+  function handleFormDisplay() {
+    form?.classList.toggle('hidden');
+    setShowForm(!showForm);
+  }
+
   return (
     <>
       <Layout>
         {props.isShared ? null : (
-          <div>
-            <form className="flex flex-col space-y-2 mb-10">
-              <Input
-                placeholder="Item name."
-                value={title}
-                handleChange={(e) => setTitle(e.target.value)}
-              />
-              <Input
-                placeholder="Item url."
-                value={url}
-                handleChange={(e) => setUrl(e.target.value)}
-              />
-              <div className="text-left">
-                <Input
-                  type="number"
-                  placeholder="Price ££"
-                  value={price}
-                  handleChange={(e) => setPrice(e.target.value)}
-                />
-              </div>
-              <Input
-                placeholder="Item image."
-                value={image}
-                handleChange={(e) => setImage(e.target.value)}
-              />
+          <div className='relative'>
+            {showForm ? (
               <button
-                className="button button-primary"
-                onClick={(e) => addItem(e)}
+                onClick={handleFormDisplay}
+                className="button button-error mb-3 md:hidden"
               >
-                Add Item
+                Cancel
               </button>
-            </form>
+            ) : (
+              <button
+                onClick={handleFormDisplay}
+                className="button button-primary mb-3 md:hidden"
+              >
+                Add a new Item
+              </button>
+            )}
+            <div id="form" className="hidden md:block ease-in-out">
+              <form className="flex flex-col space-y-2 mb-10">
+                <Input
+                  placeholder="Item name."
+                  value={title}
+                  handleChange={(e) => setTitle(e.target.value)}
+                />
+                <Input
+                  placeholder="Item url."
+                  value={url}
+                  handleChange={(e) => setUrl(e.target.value)}
+                />
+                <div className="text-left">
+                  <Input
+                    type="number"
+                    placeholder="Price ££"
+                    value={price}
+                    handleChange={(e) => setPrice(e.target.value)}
+                  />
+                </div>
+                <Input
+                  placeholder="Item image."
+                  value={image}
+                  handleChange={(e) => setImage(e.target.value)}
+                />
+                <button
+                  className="button button-primary"
+                  onClick={(e) => addItem(e)}
+                >
+                  Add Item
+                </button>
+              </form>
+            </div>
           </div>
         )}
 

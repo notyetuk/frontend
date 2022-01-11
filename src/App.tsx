@@ -7,6 +7,9 @@ import { Lists } from './Pages/Lists';
 import { Items } from './Pages/Items';
 
 export function App() {
+
+  document.title = 'NotYet.uk - Welcome'
+
   return (
     <Router>
       <Routes>
