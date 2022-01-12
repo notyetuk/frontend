@@ -4,6 +4,7 @@ import { Edit } from '../Icons/Edit';
 import { IItem } from '../Interfaces/IItem';
 import { Modal } from './Modal';
 import { Input } from './Input';
+import { Loading } from './Loading';
 
 export function Item(item: IItem) {
   const [modalShow, setModalShow] = useState(false);
@@ -38,7 +39,7 @@ export function Item(item: IItem) {
 
   return (
     <>
-      <div className="flex p-3 space-x-3 rounded-md border border-slate-300 bg-slate-50 text-left mb-2 relative">
+      <div className="flex p-3 space-x-3 rounded-md border border-slate-300 bg-slate-50 text-left mb-2 relative shadow hover:shadow-md">
         {item.isShared ? null : (
           <div className="absolute top-3 right-3 space-x-2">
             <button
@@ -64,7 +65,7 @@ export function Item(item: IItem) {
               {item.title}
             </a>
           </div>
-          <div>£ {item.price}</div>
+          <div>£ {parseFloat(item.price).toFixed(2)}</div>
           <div className="text-sm">
             Added on {new Date(item.createdAt).toLocaleDateString()}
           </div>

@@ -10,6 +10,7 @@ import { ConfigStore as $global } from '../Stores/ConfigStore';
 import { Headers } from '../Services/RequestService';
 import { Modal } from '../Components/Modal';
 import { Input } from '../Components/Input';
+import { Loading } from '../Components/Loading';
 
 export function Lists() {
   const [loading, setLoading] = useState(true);
@@ -78,9 +79,10 @@ export function Lists() {
       <Layout>
         <NewList handleClick={addList} />
         {loading ? (
-          <div className="w-5 mx-auto">
-            <Spinner />
-          </div>
+          // <div className="w-5 mx-auto">
+          //   <Spinner />
+          // </div>
+          <Loading />
         ) : lists.length === 0 ? (
           'You have no lists yet'
         ) : (

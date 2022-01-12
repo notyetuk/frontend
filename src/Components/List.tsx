@@ -56,7 +56,7 @@ export function List(list: IList) {
           closeToast={handleCloseToast}
         />
       ) : null}
-      <div className="p-3 rounded-md border border-slate-300 bg-slate-50 text-left mb-2">
+      <div className="p-3 rounded-md border border-slate-300 bg-slate-50 text-left mb-2 shadow hover:shadow-md">
         <div className="flex space-x-3 relative">
           <div className="absolute right-3 flex space-x-2">
             <button
@@ -93,7 +93,7 @@ export function List(list: IList) {
             <div onClick={openList}>
               <div className="text-2xl cursor-pointer">{list.title}</div>
             </div>
-            <div>Total: £{!list.total ? '0' : list.total}</div>
+            <div>Total: £{!list.total ? '0' : parseFloat(list.total).toFixed(2)}</div>
             <div className="text-sm">
               Added on {new Date(list.createdAt).toLocaleDateString()}
             </div>

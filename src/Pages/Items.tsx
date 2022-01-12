@@ -9,6 +9,7 @@ import axios from 'axios';
 import { ConfigStore as $global } from '../Stores/ConfigStore';
 import { Headers } from '../Services/RequestService';
 import { Spinner } from '../Icons/Spinner';
+import { Loading } from '../Components/Loading';
 
 export function Items(props: any) {
   const { id } = useParams();
@@ -101,7 +102,7 @@ export function Items(props: any) {
     <>
       <Layout>
         {props.isShared ? null : (
-          <div className='relative'>
+          <div className="relative">
             {showForm ? (
               <button
                 onClick={handleFormDisplay}
@@ -154,9 +155,10 @@ export function Items(props: any) {
         )}
 
         {loading ? (
-          <div className="w-5 mx-auto">
-            <Spinner />
-          </div>
+          // <div className="w-5 mx-auto">
+          //   <Spinner />
+          // </div>
+          <Loading />
         ) : items.length === 0 ? (
           'There are no items on this list.'
         ) : (
