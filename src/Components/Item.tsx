@@ -57,7 +57,7 @@ export function Item(item: IItem) {
           </div>
         )}
         <div className="w-1/4">
-          <a href={item.url} target="_blank"><img src={item.image} className="cursor-pointer" /></a>
+          <a href={item.url} target="_blank"><img src={item.image} className="cursor-pointer object-cover h-full" /></a>
         </div>
         <div className="flex flex-col space-y-2">
           <div className="text-2xl cursor-pointer">

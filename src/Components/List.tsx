@@ -86,7 +86,7 @@ export function List(list: IList) {
             <img
               src={list.cover}
               onClick={openList}
-              className="cursor-pointer"
+              className="cursor-pointer object-cover h-full"
             />
           </div>
           <div className="flex flex-col space-y-2">
