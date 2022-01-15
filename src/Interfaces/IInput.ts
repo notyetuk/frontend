@@ -1,7 +1,7 @@
 import { BaseSyntheticEvent } from "react";
 
 export interface IInput {
-  handleChange?: (e: BaseSyntheticEvent) => void;
+  handleChange?: (value: string) => void;
   type?: string;
   placeholder?: string;
   value?: string | number;

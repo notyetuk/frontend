@@ -10,11 +10,23 @@ import { ConfigStore as $global } from '../Stores/ConfigStore';
 import { Headers } from '../Services/RequestService';
 import { Spinner } from '../Icons/Spinner';
 import { Loading } from '../Components/Loading';
+import { Toast } from '../Components/Toast';
+
+interface IToast {
+  show: boolean;
+  text: string;
+  type: string;
+}
 
 export function Items(props: any) {
   const { id } = useParams();
   const [items, setItems] = useState<IItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [toast, setToast] = useState<IToast>({
+    show: false,
+    text: '',
+    type: '',
+  });
 
   useEffect(() => {
     if (!props.isShared) {
@@ -62,6 +74,14 @@ export function Items(props: any) {
     setPrice('');
     setUrl('');
     setImage('');
+
+    const t: IToast = {
+      show: true,
+      text: 'Item Added!',
+      type: 'success',
+    };
+    setToast(t);
+    // setShowToast(true);
   }
 
   async function saveItem(newData?: any) {
@@ -88,6 +108,13 @@ export function Items(props: any) {
       headers: Headers,
     });
     setItems(items.filter((i) => i._id !== itemId));
+
+    const t: IToast = {
+      show: true,
+      text: 'Item Deleted!',
+      type: 'success',
+    };
+    setToast(t);
   }
 
   const [showForm, setShowForm] = useState<boolean>(false);
@@ -96,6 +123,16 @@ export function Items(props: any) {
   function handleFormDisplay() {
     form?.classList.toggle('hidden');
     setShowForm(!showForm);
+  }
+
+  function closeToast() {
+    const t: IToast = {
+      show: false,
+      text: '',
+      type: '',
+    };
+    setToast(t);
+    // setShowToast(false);
   }
 
   return (
@@ -123,25 +160,25 @@ export function Items(props: any) {
                 <Input
                   placeholder="Item name."
                   value={title}
-                  handleChange={(e) => setTitle(e.target.value)}
+                  handleChange={(v) => setTitle(v)}
                 />
                 <Input
                   placeholder="Item url."
                   value={url}
-                  handleChange={(e) => setUrl(e.target.value)}
+                  handleChange={(v) => setUrl(v)}
                 />
                 <div className="text-left">
                   <Input
                     type="number"
                     placeholder="Price ££"
                     value={price}
-                    handleChange={(e) => setPrice(e.target.value)}
+                    handleChange={(v) => setPrice(v)}
                   />
                 </div>
                 <Input
                   placeholder="Item image."
                   value={image}
-                  handleChange={(e) => setImage(e.target.value)}
+                  handleChange={(v) => setImage(v)}
                 />
                 <button
                   className="button button-primary"
@@ -177,6 +214,14 @@ export function Items(props: any) {
             />
           ))
         )}
+        {toast.show ? (
+          <Toast
+            show={toast.show}
+            type={toast.type}
+            text={toast.text}
+            closeToast={closeToast}
+          />
+        ) : null}
       </Layout>
     </>
   );

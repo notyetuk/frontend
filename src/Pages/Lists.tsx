@@ -106,13 +106,13 @@ export function Lists() {
           <div className="flex flex-col space-y-2">
             <div className="mb-4 text-xl">Editing the list.</div>
             <Input
-              handleChange={(e) => setEditTitle(e.target.value)}
+              handleChange={(v) => setEditTitle(v)}
               placeholder="New list title"
               value={editTitle}
               required={true}
             />
             <Input
-              handleChange={(e) => setEditCover(e.target.value)}
+              handleChange={(v) => setEditCover(v)}
               placeholder="New list cover"
               value={editCover}
               required={true}

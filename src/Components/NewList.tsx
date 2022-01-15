@@ -51,13 +51,13 @@ export function NewList(props: any) {
       <div id="form" className="hidden md:block">
         <form className="flex flex-col space-y-2 mb-10">
           <Input
-            handleChange={(e) => setTitle(e.target.value)}
+            handleChange={(v) => setTitle(v)}
             placeholder="List title"
             value={title}
             required={true}
           />
           <Input
-            handleChange={(e) => setCover(e.target.value)}
+            handleChange={(v) => setCover(v)}
             placeholder="List cover"
             value={cover}
             required={true}

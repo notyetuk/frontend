@@ -59,20 +59,20 @@ export function Register() {
         <form className="w-2/3 md:w-3/4 mx-auto" onSubmit={handleSubmit}>
           <div className="flex flex-col space-y-2">
             <Input
-              handleChange={(e) => setUsername(e.target.value)}
+              handleChange={(v) => setUsername(v)}
               placeholder="Username."
               value={username}
               required={true}
             />
             <Input
-              handleChange={(e) => setEmail(e.target.value)}
+              handleChange={(v) => setEmail(v)}
               placeholder="Email."
               value={email}
               required={true}
             />
             <Input
               type="password"
-              handleChange={(e) => setPassword(e.target.value)}
+              handleChange={(v) => setPassword(v)}
               placeholder="Password."
               value={password}
               required={true}

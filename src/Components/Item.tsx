@@ -77,20 +77,20 @@ export function Item(item: IItem) {
           <div className="flex flex-col space-y-2">
             <Input
               value={newTitle}
-              handleChange={(e) => setNewTitle(e.target.value)}
+              handleChange={(v) => setNewTitle(v)}
             />
             <Input
               value={newUrl}
-              handleChange={(e) => setNewUrl(e.target.value)}
+              handleChange={(v) => setNewUrl(v)}
             />
             <Input
               value={newPrice}
               type="number"
-              handleChange={(e) => setNewPrice(e.target.value)}
+              handleChange={(v) => setNewPrice(v)}
             />
             <Input
               value={newImage}
-              handleChange={(e) => setNewImage(e.target.value)}
+              handleChange={(v) => setNewImage(v)}
             />
 
             <div className="flex justify-start space-x-2">
