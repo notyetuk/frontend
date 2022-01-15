@@ -2,12 +2,18 @@ import { useState } from 'react';
 import { Nav } from '../Components/Nav';
 import { authenticate } from '../Services/AuthService';
 import { UserStore } from '../Stores/UserStore';
+import { useNavigate } from 'react-router-dom';
 
 export function Layout({ children }: any) {
   const [user, setUser] = useState(UserStore.username);
 
-  authenticate().then(() => {
-    setUser(UserStore.username);
+  // const h = async () => {
+  //   const t = await authenticate();
+  //   console.log(t);
+  // }
+  // h();
+  authenticate().then((r) => {
+    setUser(r);
   });
 
   return (

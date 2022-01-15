@@ -44,7 +44,7 @@ export function Login() {
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('username', response.data.username);
 
-      location.href = '/';
+      location.href = '/list';
     }
   };
 
