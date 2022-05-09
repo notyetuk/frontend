@@ -1,0 +1,29 @@
+.card {
+  @apply h-auto border rounded-md cursor-pointer bg-white;
+  @apply dark:border-gray-700 dark:text-white dark:bg-$dark-nav;
+  @apply hover:dark:border-gray-500 hover:border-gray-300;
+
+  &__cover {
+    @apply h-[150px] w-full object-cover rounded-t-md shadow-md;
+  }
+
+  &__content {
+    @apply p-4 text-left;
+
+    .title {
+      @apply font-bold tracking-tight whitespace-nowrap overflow-hidden overflow-ellipsis;
+    }
+
+    .price {
+      @apply text-sm uppercase font-light;
+    }
+
+    .item-count {
+      @apply text-sm font-light;
+    }
+  }
+
+  &__footer {
+    @apply flex space-x-1 p-4;
+  }
+}

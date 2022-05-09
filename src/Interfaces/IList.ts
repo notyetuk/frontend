@@ -2,6 +2,7 @@ export interface IList {
   _id?: string;
   title: string;
   total?: string;
+  items?: number;
   createdAt: Date;
   cover: string;
   isPrivate?: boolean;

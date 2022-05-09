@@ -9,4 +9,5 @@ export interface IInput {
   disabled?: boolean;
   classes?: string;
   handleClick?: (e: any) => void;
+  error?: boolean;
 }

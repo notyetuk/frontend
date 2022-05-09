@@ -1,29 +1,36 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Layout } from './Layout';
-import { fetchLists } from '../Services/ListService';
-import { List } from '../Components/List';
+import { deleteList, fetchLists, updateListPrivacy } from '../Services/ListService';
 import { IList } from '../Interfaces/IList';
-import { Spinner } from '../Icons/Spinner';
 import { NewList } from '../Components/NewList';
-import axios from 'axios';
 import { ConfigStore as $global } from '../Stores/ConfigStore';
 import { Headers } from '../Services/RequestService';
 import { Modal } from '../Components/Modal';
-import { Input } from '../Components/Input';
+import { Input } from '../Components/Input/Input';
 import { Loading } from '../Components/Loading';
+import { UserContext } from '../Services/AuthService';
+import { Navigate } from 'react-router-dom';
+import { ListCard } from '../Components/Cards/ListCard';
+import axios from 'axios';
 
 export function Lists() {
-  const [loading, setLoading] = useState(true);
-  const [lists, setLists] = useState<IList[]>([]);
-  const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading]         = useState(true);
+  const [lists, setLists]             = useState<IList[]>([]);
+  const [showModal, setShowModal]     = useState(false);
   const [currentList, setCurrentList] = useState<IList>();
+
+  const user = useContext(UserContext);
+
+  if ( !user.username ) {
+    return (<Navigate to="/login"/>);
+  }
 
   useEffect(() => {
     fetchLists().then((l) => {
       setLists(l.lists);
       setLoading(false);
     });
-  }, [null]);
+  }, []);
 
   async function addList(newList: IList) {
     const { data } = await axios.post(`${$global.API}/list`, newList, {
@@ -32,11 +39,9 @@ export function Lists() {
     setLists([data.list, ...lists]);
   }
 
-  async function deleteList(id?: string) {
-    const { data } = await axios.delete(`${$global.API}/list/${id}`, {
-      headers: Headers,
-    });
-    setLists(lists.filter((l) => l._id !== id));
+  async function doDeleteList(list: IList) {
+    await deleteList(list._id!);
+    setLists(lists.filter((l) => l._id !== list._id));
   }
 
   async function editList(list: IList) {
@@ -48,8 +53,9 @@ export function Lists() {
 
   const [editTitle, setEditTitle] = useState('');
   const [editCover, setEditCover] = useState('');
+
   async function saveList() {
-    const { data } = await axios.put(
+    const { data }       = await axios.put(
       `${$global.API}/list/${currentList!._id}`,
       {
         editTitle,
@@ -61,13 +67,22 @@ export function Lists() {
     );
     const newList: IList = data.list[0];
     lists.map((l) => {
-      if (l._id === newList._id) {
+      if ( l._id === newList._id ) {
         l.title = newList.title;
         l.cover = newList.cover;
       }
     });
 
     handleModal();
+  }
+
+  async function handleListPrivacy(list: IList) {
+    const { data } = await updateListPrivacy(list._id!, list.isPrivate!);
+    const newList  = lists.map(l => {
+      if ( l._id === list._id ) l.isPrivate = data.list[0].isPrivate;
+      return l;
+    });
+    setLists(newList);
   }
 
   function handleModal() {
@@ -77,32 +92,26 @@ export function Lists() {
   return (
     <>
       <Layout>
-        <NewList handleClick={addList} />
+        <NewList handleClick={addList}/>
         {loading ? (
-          // <div className="w-5 mx-auto">
-          //   <Spinner />
-          // </div>
-          <Loading />
+          <Loading/>
         ) : lists.length === 0 ? (
-          'You have no lists yet'
-        ) : (
-          lists.map((l: IList) => (
-            <List
-              key={l._id}
-              _id={l._id}
-              title={l.title}
-              total={l.total}
-              createdAt={l.createdAt}
-              cover={l.cover}
-              isPrivate={l.isPrivate}
-              handleDelete={() => deleteList(l._id)}
-              handleEdit={() => editList(l)}
-            />
-          ))
-        )}
+            <div className="dark:text-white">You have no lists yet</div>
+          ) :
+          <div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-2 w-full lg:w-2/3 mx-auto">
+            {lists.map((list: IList) => (
+              <ListCard list={list}
+                        key={list._id}
+                        handleEdit={editList}
+                        handleListPrivacy={handleListPrivacy}
+                        handleDelete={doDeleteList}/>
+            ))}
+          </div>
+        }
       </Layout>
       {showModal ? (
-        <Modal handleModal={handleModal}>
+        <Modal handleModalClose={handleModal}>
           <div className="flex flex-col space-y-2">
             <div className="mb-4 text-xl">Editing the list.</div>
             <Input
@@ -124,7 +133,7 @@ export function Lists() {
               <button className="button button-plain" onClick={handleModal}>
                 Close
               </button>
-              {/* <Button class="button button-success" label="Save" /> */}
+              {/* <Buttons class="button button-success" label="Save" /> */}
             </div>
           </div>
         </Modal>

@@ -1,16 +1,16 @@
-import { BaseSyntheticEvent, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { BaseSyntheticEvent, useContext, useEffect, useState } from 'react';
+import { Navigate, useParams } from 'react-router-dom';
 import { IItem } from '../Interfaces/IItem';
-import { fetchItems, fetchShareableList } from '../Services/ListService';
+import { deleteItem, fetchItems, fetchShareableList, saveItem } from '../Services/ListService';
 import { Layout } from './Layout';
-import { Item } from '../Components/Item';
-import { Input } from '../Components/Input';
-import axios from 'axios';
+import { Input } from '../Components/Input/Input';
 import { ConfigStore as $global } from '../Stores/ConfigStore';
 import { Headers } from '../Services/RequestService';
-import { Spinner } from '../Icons/Spinner';
 import { Loading } from '../Components/Loading';
 import { Toast } from '../Components/Toast';
+import { UserContext } from '../Services/AuthService';
+import { ItemCard } from '../Components/Cards/ItemCard';
+import axios from 'axios';
 
 interface IToast {
   show: boolean;
@@ -18,18 +18,23 @@ interface IToast {
   type: string;
 }
 
-export function Items(props: any) {
-  const { id } = useParams();
-  const [items, setItems] = useState<IItem[]>([]);
+export function List(props: any) {
+  const { id }                = useParams();
+  const [items, setItems]     = useState<IItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [toast, setToast] = useState<IToast>({
+  const [toast, setToast]     = useState<IToast>({
     show: false,
     text: '',
     type: '',
   });
 
+  const user = useContext(UserContext);
+  if ( !user.username && !props.isShared ) {
+    return (<Navigate to="/login"/>);
+  }
+
   useEffect(() => {
-    if (!props.isShared) {
+    if ( !props.isShared ) {
       fetchItems(id!).then((r) => {
         setItems(r.items);
         setLoading(false);
@@ -40,27 +45,28 @@ export function Items(props: any) {
         setLoading(false);
       });
     }
-  }, [null]);
+  }, []);
 
   const [title, setTitle] = useState('');
-  const [url, setUrl] = useState('');
+  const [url, setUrl]     = useState('');
   const [image, setImage] = useState('');
   const [price, setPrice] = useState('');
 
+  // TODO: Refactor this...
   async function addItem(e: BaseSyntheticEvent) {
     e.preventDefault();
 
     // TODO: TEMP
-    if (!title || !url || !image || !price) {
+    if ( !title || !url || !image || !price ) {
       return alert('fill all details');
     }
 
     const newItem: IItem = {
-      list: id,
-      title: title,
-      price: price,
-      url: url,
-      image: image,
+      list     : id,
+      title    : title,
+      price    : price,
+      url      : url,
+      image    : image,
       createdAt: new Date(),
     };
 
@@ -84,30 +90,20 @@ export function Items(props: any) {
     // setShowToast(true);
   }
 
-  async function saveItem(newData?: any) {
-    // setItems([newData, ...items]);
-    const { data } = await axios.put(
-      `${$global.API}/item/save/${newData.id}`,
-      newData,
-      {
-        headers: Headers,
-      }
-    );
+  async function doSaveItem(newData: any) {
+    const { data } = await saveItem(newData.id, newData);
 
-    const item: IItem = data.item[0];
-    for (let i in items) {
-      if (item._id === items[i]._id) {
-        items.splice(parseInt(i), 1, item);
-      }
-    }
-    setItems([...items]);
+    const newList = items.map(i => {
+      if ( i._id === newData.id ) i = data.item[0];
+      return i;
+    });
+
+    setItems(newList);
   }
 
-  async function deleteItem(itemId?: string) {
-    const { data } = await axios.delete(`${$global.API}/item/${itemId}`, {
-      headers: Headers,
-    });
-    setItems(items.filter((i) => i._id !== itemId));
+  async function doDeleteItem(item: IItem) {
+    await deleteItem(item._id!);
+    setItems(items.filter((i) => i._id !== item._id));
 
     const t: IToast = {
       show: true,
@@ -118,7 +114,7 @@ export function Items(props: any) {
   }
 
   const [showForm, setShowForm] = useState<boolean>(false);
-  const form = document.getElementById('form');
+  const form                    = document.getElementById('form');
 
   function handleFormDisplay() {
     form?.classList.toggle('hidden');
@@ -138,11 +134,8 @@ export function Items(props: any) {
   return (
     <>
       <Layout>
-        <div>
-          hello there
-        </div>
         {props.isShared ? null : (
-          <div className="relative">
+          <div className="relative w-full md:w-2/3 lg:w-2/4 max-w-[550px] mx-auto">
             {showForm ? (
               <button
                 onClick={handleFormDisplay}
@@ -195,27 +188,21 @@ export function Items(props: any) {
         )}
 
         {loading ? (
-          // <div className="w-5 mx-auto">
-          //   <Spinner />
-          // </div>
-          <Loading />
+          <Loading/>
         ) : items.length === 0 ? (
-          'There are no items on this list.'
+          <div className="dark:text-white">There are no items on this list.</div>
         ) : (
-          items.map((i: IItem) => (
-            <Item
-              key={i._id}
-              _id={i._id}
-              title={i.title}
-              price={i.price}
-              url={i.url}
-              image={i.image}
-              createdAt={i.createdAt}
-              handleDelete={() => deleteItem(i._id)}
-              isShared={props.isShared}
-              handleSave={saveItem}
-            />
-          ))
+          <div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-2 w-full lg:w-2/3 mx-auto">
+            {items.map((item: IItem) => (
+              <ItemCard
+                item={item}
+                key={item._id}
+                handleEditItem={doSaveItem}
+                handleDeleteItem={doDeleteItem}
+              />
+            ))}
+          </div>
         )}
         {toast.show ? (
           <Toast

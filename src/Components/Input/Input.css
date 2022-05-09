@@ -1,0 +1,5 @@
+.input {
+  @apply py-2 px-5 border border-gray-300 rounded-md outline-none outline-offset-0 focus:border-opacity-0;
+  @apply outline-2 focus:outline-blue-300;
+  @apply dark:bg-$dark dark:text-white focus:dark:outline-blue-300 dark:border-opacity-30;
+}

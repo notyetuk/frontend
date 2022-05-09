@@ -1,19 +1,22 @@
 import { useState } from 'react';
 import { Button } from '../Components/Button';
-import { Input } from '../Components/Input';
+import { Input } from '../Components/Input/Input';
 import { Layout } from './Layout';
 import axios from 'axios';
 import { Toast } from '../Components/Toast';
 import { UserStore } from '../Stores/UserStore';
+import { useNavigate } from 'react-router-dom';
 
 export function Login() {
+  const navigate = useNavigate();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const [toastMessage, setToastMessage] = useState('');
-  const [toastType, setToastType] = useState('success');
-  const [toastShow, setToastShow] = useState(false);
-  const handleToast = (message: string, type: string, show: boolean) => {
+  const [toastType, setToastType]       = useState('success');
+  const [toastShow, setToastShow]       = useState(false);
+  const handleToast                     = (message: string, type: string, show: boolean) => {
     setToastMessage(message);
     setToastType(type);
     setToastShow(show);
@@ -37,14 +40,16 @@ export function Login() {
       return handleToast(e.response.data.message, 'error', true);
     });
 
-    if (response) {
+    if ( response ) {
       handleToast(response.data.message, 'success', true);
 
+      UserStore.userId = response.data._id;
       UserStore.username = response.data.username;
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('username', response.data.username);
 
-      location.href = '/list';
+
+      return navigate('/list');
     }
   };
 
@@ -57,7 +62,7 @@ export function Login() {
           show={toastShow}
           closeToast={handleCloseToast}
         />
-        <div className="text-2xl mb-10">Login to manage your lists.</div>
+        <div className="text-2xl mb-10 dark:text-white">Login to manage your lists.</div>
         <form className="w-2/3 md:w-3/4 mx-auto" onSubmit={handleSubmit}>
           <div className="flex flex-col space-y-2">
             <Input
@@ -71,7 +76,7 @@ export function Login() {
               placeholder={'Password.'}
               value={password}
             />
-            <Button label="Login" class="button button-primary" />
+            <Button label="Login" class="button button-primary"/>
           </div>
         </form>
       </Layout>

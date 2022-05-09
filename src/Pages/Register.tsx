@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Layout } from './Layout';
-import { Input } from '../Components/Input';
+import { Input } from '../Components/Input/Input';
 import { Button } from '../Components/Button';
 import axios from 'axios';
 import { ConfigStore as $global } from '../Stores/ConfigStore';
@@ -55,7 +55,7 @@ export function Register() {
           show={toastShow}
           closeToast={handleCloseToast}
         />
-        <div className="text-2xl mb-10">Register a new account.</div>
+        <div className="text-2xl mb-10 dark:text-white">Register a new account.</div>
         <form className="w-2/3 md:w-3/4 mx-auto" onSubmit={handleSubmit}>
           <div className="flex flex-col space-y-2">
             <Input

@@ -3,18 +3,18 @@ import { BaseSyntheticEvent } from 'react';
 export function Modal(props: any) {
   addEventListener('keydown', (e: KeyboardEvent) => {
     if (e.key === 'Escape') {
-      clodeModal();
+      closeModal();
     }
   });
 
   function handleClick(e: BaseSyntheticEvent) {
     if (e.target.id === 'bg') {
-      clodeModal();
+      closeModal();
     }
   }
 
-  function clodeModal() {
-    props.handleModal();
+  function closeModal() {
+    props.handleModalClose();
   }
 
   return (

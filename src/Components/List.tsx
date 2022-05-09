@@ -3,13 +3,12 @@ import { IList } from '../Interfaces/IList';
 import { Bin } from '../Icons/Bin';
 import { Edit } from '../Icons/Edit';
 import { LockClosed, LockOpen } from '../Icons/Lock';
-import axios from 'axios';
 import { ConfigStore as $global } from '../Stores/ConfigStore';
-import { Headers } from '../Services/RequestService';
 import { useState } from 'react';
 import { Toast } from './Toast';
-import { Input } from './Input';
+import { Input } from './Input/Input';
 import { Copy } from '../Icons/Copy';
+import { updateListPrivacy } from '../Services/ListService';
 
 export function List(list: IList) {
   const [isPrivate, setIsPrivate] = useState(list.isPrivate);
@@ -17,22 +16,16 @@ export function List(list: IList) {
   const [toastText, setToastText] = useState('');
 
   const navigate = useNavigate();
+
   function openList() {
     navigate(`/list/${list._id}`);
   }
 
   async function setPrivate() {
-    const { data } = await axios.put(
-      `${$global.API}/list/privacy/${list._id}`,
-      {
-        isPrivate: !isPrivate,
-      },
-      {
-        headers: Headers,
-      }
-    );
-    setIsPrivate(!isPrivate);
-    setToastText(`Made list ${!isPrivate ? 'private' : 'public'}.`);
+    const { data } = await updateListPrivacy(list._id!, list.isPrivate!);
+    console.log(data);
+    setIsPrivate(!list.isPrivate);
+    setToastText(`Made list ${isPrivate ? 'private' : 'public'}.`);
     setToastShow(true);
   }
 
@@ -40,10 +33,10 @@ export function List(list: IList) {
     setToastShow(false);
   }
 
-  function copyShareableLink() {
+  async function copyShareableLink() {
     setToastShow(true);
     setToastText('Copied shareable link to clipboard.');
-    navigator.clipboard.writeText(`${$global.URL}/list/s/${list._id}`);
+    await navigator.clipboard.writeText(`${$global.URL}/list/s/${list._id}`);
   }
 
   return (
@@ -56,7 +49,8 @@ export function List(list: IList) {
           closeToast={handleCloseToast}
         />
       ) : null}
-      <div className="p-3 rounded-md border border-slate-300 bg-slate-50 text-left mb-2 shadow hover:shadow-md">
+      <div
+        className="p-3 rounded-md border border-slate-300 bg-slate-50 text-left mb-2 shadow hover:shadow-md">
         <div className="flex space-x-3 relative">
           <div className="absolute right-3 flex space-x-2">
             <button
@@ -64,30 +58,30 @@ export function List(list: IList) {
               onClick={setPrivate}
             >
               {isPrivate ? (
-                <LockClosed classes="w-4 h-4" />
+                <LockClosed classes="w-4 h-4"/>
               ) : (
-                <LockOpen classes="w-4 h-4" />
+                <LockOpen classes="w-4 h-4"/>
               )}
             </button>
             <button
               className="button-success text-white p-1 rounded-full outline-none"
               onClick={() => list.handleEdit!(list._id)}
             >
-              <Edit classes="w-4 h-4" />
+              <Edit classes="w-4 h-4"/>
             </button>
             <button
               className="button-error text-white p-1 rounded-full outline-none"
               onClick={() => list.handleDelete!(list._id)}
             >
-              <Bin classes="w-4 h-4" />
+              <Bin classes="w-4 h-4"/>
             </button>
           </div>
           <div className="w-1/4">
             <img
               src={list.cover}
               onClick={openList}
-              className="cursor-pointer object-cover h-full"
-            />
+              className="cursor-pointer object-cover w-[200px] max-h-[100px]"
+              alt="list cover"/>
           </div>
           <div className="flex flex-col space-y-2">
             <div onClick={openList}>
@@ -112,7 +106,7 @@ export function List(list: IList) {
                 className="button button-primary"
                 onClick={copyShareableLink}
               >
-                <Copy classes="w-5 h-5" />
+                <Copy classes="w-5 h-5"/>
               </button>
             </>
           )}
