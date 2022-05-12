@@ -39,7 +39,7 @@ export function ListCard(props: ICardProps) {
 
       <div className="card__content">
         <div className="title">{props.list.title}</div>
-        <div className="price">£{Number(props.list.total).toFixed(2)}</div>
+        <div className="price">£{Number(props.list.total || 0).toFixed(2)}</div>
         <div className="item-count">{props.list.items} items</div>
       </div>
 

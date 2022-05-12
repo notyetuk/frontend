@@ -1,16 +1,19 @@
 import { BaseSyntheticEvent, useContext, useEffect, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import { IItem } from '../Interfaces/IItem';
-import { deleteItem, fetchItems, fetchShareableList, saveItem } from '../Services/ListService';
+import {
+  createItem,
+  deleteItem,
+  fetchItems,
+  fetchShareableList,
+  updateItem
+} from '../Services/ListService';
 import { Layout } from './Layout';
 import { Input } from '../Components/Input/Input';
-import { ConfigStore as $global } from '../Stores/ConfigStore';
-import { Headers } from '../Services/RequestService';
 import { Loading } from '../Components/Loading';
 import { Toast } from '../Components/Toast';
 import { UserContext } from '../Services/AuthService';
 import { ItemCard } from '../Components/Cards/ItemCard';
-import axios from 'axios';
 
 interface IToast {
   show: boolean;
@@ -70,10 +73,7 @@ export function List(props: any) {
       createdAt: new Date(),
     };
 
-    const { data } = await axios.post(`${$global.API}/item`, newItem, {
-      headers: Headers,
-    });
-
+    const data: any = await createItem(newItem);
     setItems([data.item, ...items]);
 
     setTitle('');
@@ -91,7 +91,7 @@ export function List(props: any) {
   }
 
   async function doSaveItem(newData: any) {
-    const { data } = await saveItem(newData.id, newData);
+    const { data } = await updateItem(newData.id, newData);
 
     const newList = items.map(i => {
       if ( i._id === newData.id ) i = data.item[0];

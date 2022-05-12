@@ -1,17 +1,20 @@
 import { useContext, useEffect, useState } from 'react';
 import { Layout } from './Layout';
-import { deleteList, fetchLists, updateListPrivacy } from '../Services/ListService';
+import {
+  createList,
+  deleteList,
+  fetchLists,
+  updateList,
+  updateListPrivacy,
+} from '../Services/ListService';
 import { IList } from '../Interfaces/IList';
 import { NewList } from '../Components/NewList';
-import { ConfigStore as $global } from '../Stores/ConfigStore';
-import { Headers } from '../Services/RequestService';
 import { Modal } from '../Components/Modal';
 import { Input } from '../Components/Input/Input';
 import { Loading } from '../Components/Loading';
 import { UserContext } from '../Services/AuthService';
 import { Navigate } from 'react-router-dom';
 import { ListCard } from '../Components/Cards/ListCard';
-import axios from 'axios';
 
 export function Lists() {
   const [loading, setLoading]         = useState(true);
@@ -33,9 +36,7 @@ export function Lists() {
   }, []);
 
   async function addList(newList: IList) {
-    const { data } = await axios.post(`${$global.API}/list`, newList, {
-      headers: Headers,
-    });
+    const data = await createList(newList);
     setLists([data.list, ...lists]);
   }
 
@@ -55,17 +56,9 @@ export function Lists() {
   const [editCover, setEditCover] = useState('');
 
   async function saveList() {
-    const { data }       = await axios.put(
-      `${$global.API}/list/${currentList!._id}`,
-      {
-        editTitle,
-        editCover,
-      },
-      {
-        headers: Headers,
-      }
-    );
-    const newList: IList = data.list[0];
+    if ( !currentList?._id ) return;
+    const list           = await updateList(currentList._id, { editTitle, editCover });
+    const newList: IList = list[0];
     lists.map((l) => {
       if ( l._id === newList._id ) {
         l.title = newList.title;
