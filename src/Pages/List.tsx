@@ -12,8 +12,8 @@ import { Layout } from './Layout';
 import { Input } from '../Components/Input/Input';
 import { Loading } from '../Components/Loading';
 import { Toast } from '../Components/Toast';
-import { UserContext } from '../Services/AuthService';
 import { ItemCard } from '../Components/Cards/ItemCard';
+import { UserContext } from '../Services/AuthService';
 
 interface IToast {
   show: boolean;

@@ -8,3 +8,4 @@ dist-ssr
 build
 .idea
 package-lock.json
+.vscode
