@@ -11,7 +11,7 @@ export function Avatar(props: AvatarProps) {
   return (
     <>
       <img className="w-[25px] h-[25px] rounded-full"
-           src={`http://localhost:8081/user/avatar/${user.username}`} alt={user.username}
+           src={`${import.meta.env.VITE_API}/user/avatar/${user.username}`} alt={user.username}
            onClick={props.handleClick}/>
     </>
   );
