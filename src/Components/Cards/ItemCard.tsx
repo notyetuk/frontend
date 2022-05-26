@@ -9,8 +9,8 @@ import { Bin } from '../../Icons/Bin';
 
 interface ICardProps {
   item: IItem;
-  handleEditItem: (item: IItem) => void;
-  handleDeleteItem: (item: IItem) => void;
+  handleEditItem?: (item: IItem) => void;
+  handleDeleteItem?: (item: IItem) => void;
 }
 
 export function ItemCard(props: ICardProps) {
@@ -26,12 +26,12 @@ export function ItemCard(props: ICardProps) {
   }
 
   function onSaveItem(newData: any) {
-    props.handleEditItem(newData);
+    props.handleEditItem?.(newData);
     setIsEditing(false);
   }
 
   function onClickDelete() {
-    props.handleDeleteItem(props.item);
+    props.handleDeleteItem?.(props.item);
   }
 
   function onClickItem() {

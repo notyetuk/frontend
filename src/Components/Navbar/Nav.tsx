@@ -1,14 +1,18 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ThemeSelector } from './ThemeSelector';
+import { ThemeSelector } from '../ThemeSelector';
 import { LogoutIcon } from '@heroicons/react/outline';
 
-import { UserContext } from '../Services/AuthService';
+import { UserContext } from '../../Services/AuthService';
+import { Avatar } from '../User/Avatar';
+import { UploadAvatar } from '../User/UploadAvatar';
 
 export function Nav() {
 
   const user = useContext(UserContext);
   const navigate = useNavigate();
+
+  const [isUploading, setIsUploading] = useState(false);
 
   function doLogout() {
     localStorage.removeItem('token');
@@ -18,6 +22,10 @@ export function Nav() {
     user.userId = '';
 
     navigate('/');
+  }
+
+  function onAvatarClick() {
+    setIsUploading(!isUploading);
   }
 
   return (
@@ -42,11 +50,15 @@ export function Nav() {
         <ThemeSelector/>
         {!user.username ? null : (
           <>
+            <Avatar handleClick={onAvatarClick} />
             <div>Welcome {user.username}!</div>
             <button type="button" onClick={doLogout}><LogoutIcon className="w-5"/></button>
           </>
         )}
       </div>
+      {(!isUploading) ? null :
+        <UploadAvatar handleClose={onAvatarClick} />
+      }
     </div>
   );
 }

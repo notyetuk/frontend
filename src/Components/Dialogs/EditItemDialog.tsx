@@ -1,5 +1,5 @@
 import { Input } from '../Input/Input';
-import { Modal } from '../Modal';
+import { Modal } from '../Modal/Modal';
 import { useState } from 'react';
 import { IItem } from '../../Interfaces/IItem';
 

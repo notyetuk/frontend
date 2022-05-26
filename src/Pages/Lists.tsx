@@ -9,7 +9,7 @@ import {
 } from '../Services/ListService';
 import { IList } from '../Interfaces/IList';
 import { NewList } from '../Components/NewList';
-import { Modal } from '../Components/Modal';
+import { Modal } from '../Components/Modal/Modal';
 import { Input } from '../Components/Input/Input';
 import { Loading } from '../Components/Loading';
 import { UserContext } from '../Services/AuthService';

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { IItem } from '../Interfaces/IItem';
-import { Modal } from './Modal';
+import { Modal } from './Modal/Modal';
 import { Input } from './Input/Input';
 import { ItemCard } from './Cards/ItemCard';
 
@@ -69,7 +69,7 @@ export function Item(item: IItem) {
       {/*    </div>*/}
       {/*  </div>*/}
       {/*</div>*/}
-      <ItemCard item={item}/>
+      <ItemCard item={item} />
       {modalShow ? (
         <Modal handleModal={closeModal}>
           <div className="mb-4 text-xl">Editing the item.</div>

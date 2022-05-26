@@ -1,5 +1,3 @@
-import { BaseSyntheticEvent } from "react";
-
 export interface IInput {
   handleChange?: (value: string) => void;
   type?: string;
