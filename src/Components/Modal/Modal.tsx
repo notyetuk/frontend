@@ -1,15 +1,25 @@
-import { BaseSyntheticEvent } from 'react';
-import { useTheme } from '../../Hooks/useTheme';
+import { BaseSyntheticEvent, useEffect } from 'react';
 import './Modal.scss';
 
-export function Modal(props: any) {
-  const [theme] = useTheme();
+interface IModal {
+  title: string;
+  handleModalClose: () => void;
+  children: any;
+}
 
-  addEventListener('keydown', (e: KeyboardEvent) => {
-    if ( e.key === 'Escape' ) {
-      closeModal();
+export function Modal(props: IModal) {
+  
+  useEffect(() => {
+    addEventListener('keydown', (e: KeyboardEvent) => {
+      if ( e.key === 'Escape' ) {
+        closeModal();
+      }
+    });
+
+    return () => {
+      removeEventListener('keydown', () => {});
     }
-  });
+  }, []);
 
   function handleClick(e: BaseSyntheticEvent) {
     if ( e.target.id === 'bg' ) {
@@ -28,6 +38,9 @@ export function Modal(props: any) {
       onClick={handleClick}
     >
       <div className="modal">
+        {props.title ? (
+          <div className="modal_title">{props.title}</div>  
+        ) : null}
         {props.children}
       </div>
     </div>

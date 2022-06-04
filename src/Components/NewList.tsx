@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { IList } from '../Interfaces/IList';
 import { Input } from './Input/Input';
+import { Modal } from './Modal/Modal';
+import { Button } from './Button';
 
 export function NewList(props: any) {
   const [title, setTitle]                     = useState<string>('');
@@ -27,17 +29,9 @@ export function NewList(props: any) {
       return;
     }
 
-    props.handleClick(newList);
+    props.handleAddNewListSubmit(newList);
     setTitle('');
     setCover('');
-  }
-
-  const [showForm, setShowForm] = useState<boolean>(false);
-  const form                    = document.getElementById('form');
-
-  function handleFormDisplay() {
-    setShowForm(!showForm);
-    form?.classList.toggle('hidden');
   }
 
   function handleTitleChange(value: string) {
@@ -54,25 +48,14 @@ export function NewList(props: any) {
     }
   }
 
+  function onModalClose() {
+    props.handleAddNewListClose();
+  }
+
   return (
-    <div className="w-full md:w-2/3 lg:w-2/4 max-w-[550px] mx-auto">
-      {showForm ? (
-        <button
-          onClick={handleFormDisplay}
-          className="button button-error md:hidden mb-3"
-        >
-          Cancel
-        </button>
-      ) : (
-        <button
-          onClick={handleFormDisplay}
-          className="button button-primary md:hidden mb-3"
-        >
-          Add new List
-        </button>
-      )}
-      <div id="form" className="hidden md:block">
-        <form className="flex flex-col space-y-2 mb-10">
+    <Modal title="Add a new list" handleModalClose={onModalClose}>
+      <form>
+        <div className="flex flex-col space-y-2">
           <Input
             handleChange={handleTitleChange}
             placeholder="List title"
@@ -87,15 +70,12 @@ export function NewList(props: any) {
             required={true}
             error={coverInputError}
           />
-          <button
-            className="button button-primary mb-5"
-            type="button"
-            onClick={handleSubmit}
-          >
-            Add List
-          </button>
-        </form>
-      </div>
-    </div>
+        </div>
+        <div className="flex space-x-2 mt-5">
+          <Button type="button" label="Cancel" onButtonClick={onModalClose} class="button button-plain" />
+          <Button type="button" label="Add List" onButtonClick={handleSubmit} class="button button-success" />
+        </div>
+      </form>
+    </Modal>
   );
 }

@@ -9,11 +9,12 @@ import {
   updateItem
 } from '../Services/ListService';
 import { Layout } from './Layout';
-import { Input } from '../Components/Input/Input';
 import { Loading } from '../Components/Loading';
 import { Toast } from '../Components/Toast';
 import { ItemCard } from '../Components/Cards/ItemCard';
 import { UserContext } from '../Services/AuthService';
+import { NewItem } from '../Components/NewItem';
+import { Button } from '../Components/Button';
 
 interface IToast {
   show: boolean;
@@ -30,6 +31,7 @@ export function List(props: any) {
     text: '',
     type: '',
   });
+  const [isAdding, setIsAdding] = useState(false);
 
   const user = useContext(UserContext);
   if ( !user.username && !props.isShared ) {
@@ -37,6 +39,8 @@ export function List(props: any) {
   }
 
   useEffect(() => {
+    if (!id) throw new Error('No List id provided.');
+
     if ( !props.isShared ) {
       fetchItems(id!).then((r) => {
         setItems(r.items);
@@ -50,20 +54,7 @@ export function List(props: any) {
     }
   }, []);
 
-  const [title, setTitle] = useState('');
-  const [url, setUrl]     = useState('');
-  const [image, setImage] = useState('');
-  const [price, setPrice] = useState('');
-
-  // TODO: Refactor this...
-  async function addItem(e: BaseSyntheticEvent) {
-    e.preventDefault();
-
-    // TODO: TEMP
-    if ( !title || !url || !image || !price ) {
-      return alert('fill all details');
-    }
-
+  async function addItem({title, url, image, price}) {
     const newItem: IItem = {
       list     : id,
       title    : title,
@@ -75,11 +66,6 @@ export function List(props: any) {
 
     const data: any = await createItem(newItem);
     setItems([data.item, ...items]);
-
-    setTitle('');
-    setPrice('');
-    setUrl('');
-    setImage('');
 
     const t: IToast = {
       show: true,
@@ -113,14 +99,6 @@ export function List(props: any) {
     setToast(t);
   }
 
-  const [showForm, setShowForm] = useState<boolean>(false);
-  const form                    = document.getElementById('form');
-
-  function handleFormDisplay() {
-    form?.classList.toggle('hidden');
-    setShowForm(!showForm);
-  }
-
   function closeToast() {
     const t: IToast = {
       show: false,
@@ -131,59 +109,16 @@ export function List(props: any) {
     // setShowToast(false);
   }
 
+  function onAddNewItemClose() {
+    setIsAdding(false);
+  }
+
   return (
     <>
       <Layout>
         {props.isShared ? null : (
-          <div className="relative w-full md:w-2/3 lg:w-2/4 max-w-[550px] mx-auto">
-            {showForm ? (
-              <button
-                onClick={handleFormDisplay}
-                className="button button-error mb-3 md:hidden"
-              >
-                Cancel
-              </button>
-            ) : (
-              <button
-                onClick={handleFormDisplay}
-                className="button button-primary mb-3 md:hidden"
-              >
-                Add a new Item
-              </button>
-            )}
-            <div id="form" className="hidden md:block ease-in-out">
-              <form className="flex flex-col space-y-2 mb-10">
-                <Input
-                  placeholder="Item name."
-                  value={title}
-                  handleChange={(v) => setTitle(v)}
-                />
-                <Input
-                  placeholder="Item url."
-                  value={url}
-                  handleChange={(v) => setUrl(v)}
-                />
-                <div className="text-left">
-                  <Input
-                    type="number"
-                    placeholder="Price ££"
-                    value={price}
-                    handleChange={(v) => setPrice(v)}
-                  />
-                </div>
-                <Input
-                  placeholder="Item image."
-                  value={image}
-                  handleChange={(v) => setImage(v)}
-                />
-                <button
-                  className="button button-primary"
-                  onClick={(e) => addItem(e)}
-                >
-                  Add Item
-                </button>
-              </form>
-            </div>
+          <div className="w-full lg:w-2/3 mx-auto text-left mb-5">
+            <Button label="Add Item" onButtonClick={() => setIsAdding(true)} class="button button-primary" />
           </div>
         )}
 
@@ -213,6 +148,9 @@ export function List(props: any) {
           />
         ) : null}
       </Layout>
+      {isAdding ? (
+        <NewItem onAddNewItemSubmit={addItem} onAddNewItemClose={onAddNewItemClose} />
+      ) : null}
     </>
   );
 }

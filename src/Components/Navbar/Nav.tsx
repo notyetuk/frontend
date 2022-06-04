@@ -51,7 +51,7 @@ export function Nav() {
         {!user.username ? null : (
           <>
             <Avatar handleClick={onAvatarClick} />
-            <div>Welcome {user.username}!</div>
+            <div className="hidden md:block">Welcome {user.username}!</div>
             <button type="button" onClick={doLogout}><LogoutIcon className="w-5"/></button>
           </>
         )}

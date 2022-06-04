@@ -15,12 +15,15 @@ import { Loading } from '../Components/Loading';
 import { UserContext } from '../Services/AuthService';
 import { Navigate } from 'react-router-dom';
 import { ListCard } from '../Components/Cards/ListCard';
+import { Button } from '../Components/Button';
 
 export function Lists() {
   const [loading, setLoading]         = useState(true);
   const [lists, setLists]             = useState<IList[]>([]);
   const [showModal, setShowModal]     = useState(false);
   const [currentList, setCurrentList] = useState<IList>();
+
+  const [isAdding, setIsAdding] = useState(false);
 
   const user = useContext(UserContext);
 
@@ -38,6 +41,7 @@ export function Lists() {
   async function addList(newList: IList) {
     const data = await createList(newList);
     setLists([data.list, ...lists]);
+    setIsAdding(false);
   }
 
   async function doDeleteList(list: IList) {
@@ -57,8 +61,8 @@ export function Lists() {
 
   async function saveList() {
     if ( !currentList?._id ) return;
-    const list           = await updateList(currentList._id, { editTitle, editCover });
-    const newList: IList = list[0];
+    const response = await updateList(currentList._id, { editTitle, editCover });
+    const newList: IList = response.data.list[0];
     lists.map((l) => {
       if ( l._id === newList._id ) {
         l.title = newList.title;
@@ -82,10 +86,21 @@ export function Lists() {
     setShowModal(false);
   }
 
+  function onAddNewListClick() {
+    setIsAdding(true);
+  }
+
+  function onAddNewListClose() {
+    setIsAdding(false);
+  }
+
   return (
     <>
       <Layout>
-        <NewList handleClick={addList}/>
+        {/*<NewList handleClick={addList}/>*/}
+        <div className="w-full lg:w-2/3 text-left mx-auto mb-5">
+          <Button onButtonClick={onAddNewListClick} label="Add New List" class="button button-primary" />
+        </div>
         {loading ? (
           <Loading/>
         ) : lists.length === 0 ? (
@@ -103,6 +118,9 @@ export function Lists() {
           </div>
         }
       </Layout>
+      {isAdding ? (
+        <NewList handleAddNewListClose={onAddNewListClose} handleAddNewListSubmit={addList} />
+      ) : null}
       {showModal ? (
         <Modal handleModalClose={handleModal}>
           <div className="flex flex-col space-y-2">

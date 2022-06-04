@@ -1,4 +1,9 @@
 .modal {
   @apply w-full md:w-2/3 lg:w-2/4 relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md p-5 text-center;
   @apply dark:bg-$dark dark:text-white bg-white;
+
+  &_title {
+    @apply mb-4 text-xl;
+  }
+  
 }

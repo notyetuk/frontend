@@ -18,10 +18,9 @@ async function createList(data: any) {
 }
 
 async function updateList(listId: string, data: any) {
-  const response: any = await axios.post(`${$global.API}/list/${listId}`, data, {
+  return await axios.put(`${$global.API}/list/${listId}`, data, {
     headers: { ...authHeaders() },
   });
-  return response.data;
 }
 
 async function fetchItems(listId: string): Promise<any> {
