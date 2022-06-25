@@ -4,7 +4,8 @@ export function Home() {
   return (
     <>
       <Layout>
-        <div className="text-white text-4xl font-extrabold tracking-wider">Welcome to NotYet!</div>
+        <div className="dark:text-white text-4xl font-extrabold tracking-wider">Welcome to NotYet!</div>
+        <div className="dark:text-white">Here you can create and share your WishLists!</div>
       </Layout>
     </>
   );
