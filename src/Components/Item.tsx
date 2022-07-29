@@ -71,8 +71,8 @@ export function Item(item: IItem) {
       {/*</div>*/}
       <ItemCard item={item} />
       {modalShow ? (
-        <Modal handleModal={closeModal}>
-          <div className="mb-4 text-xl">Editing the item.</div>
+        <Modal title="Editing the item." handleModalClose={closeModal}>
+          {/*<div className="mb-4 text-xl">Editing the item.</div>*/}
           <div className="flex flex-col space-y-2">
             <Input
               value={newTitle}

@@ -1,0 +1,4 @@
+.card-button {
+  @apply px-2 py-1 text-xs rounded-md opacity-40 outline-none text-white;
+  @apply hover:opacity-80 hover:text-white;
+}
