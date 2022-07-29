@@ -69,6 +69,13 @@ async function deleteItem(itemId: string) {
   });
 }
 
+// todo: user service is needed... this is just a test
+async function uploadAvatar(data: FormData) {
+  return await axios.post(`${$global.API}/user/avatar`, data, {
+    headers: authHeaders()
+  });
+}
+
 function authHeaders() {
   const token = localStorage.getItem('token');
   return {
@@ -87,4 +94,5 @@ export {
   deleteList,
   deleteItem,
   updateItem,
+  uploadAvatar,
 };
