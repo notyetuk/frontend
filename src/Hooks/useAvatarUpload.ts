@@ -28,11 +28,9 @@ export function useAvatarUpload() {
     uploadAvatar(formData)
       .then((res) => {
         setIsUploading(false);
-        console.log(res);
       })
       .catch((error) => {
         setIsUploading(false);
-        console.error(error);
       });
   }
 

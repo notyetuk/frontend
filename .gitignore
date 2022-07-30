@@ -9,3 +9,4 @@ build
 .idea
 package-lock.json
 .vscode
+storybook-static
