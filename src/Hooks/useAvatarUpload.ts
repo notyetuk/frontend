@@ -1,18 +1,23 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { uploadAvatar } from '../Services/ListService';
 
-export function useAvatarUpload() {
+interface IUseAvatarUpload {
+  closeModal?: () => void;
+  renderPreview?: (avatarFile: File | undefined) => JSX.Element;
+}
+
+export function useAvatarUpload({ closeModal, renderPreview }: IUseAvatarUpload) {
   const [avatarFile, setAvatarFile] = useState<File>();
   const [isUploading, setIsUploading] = useState<boolean>(false);
 
-  function selectAvatarFile(event: ChangeEvent<HTMLInputElement>) {
+  const selectAvatarFile = (event: ChangeEvent<HTMLInputElement>) => {
     if ( !event.target.files ) {
       throw new Error('You must select an image file.');
     }
     setAvatarFile(event.target.files[0]);
-  }
+  };
 
-  function doUpload(event: FormEvent<HTMLFormElement>) {
+  const doUpload = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     event.stopPropagation();
 
@@ -28,11 +33,12 @@ export function useAvatarUpload() {
     uploadAvatar(formData)
       .then((res) => {
         setIsUploading(false);
+        closeModal!();
       })
       .catch((error) => {
         setIsUploading(false);
       });
-  }
+  };
 
-  return { selectAvatarFile, doUpload, isUploading };
+  return { selectAvatarFile, doUpload, avatarFile, isUploading };
 }
