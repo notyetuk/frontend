@@ -10,7 +10,7 @@ export function Avatar(props: AvatarProps) {
 
   return (
     <>
-      <img className="w-[25px] h-[25px] rounded-full"
+      <img className="w-[25px] h-[25px] rounded-full cursor-pointer"
            src={`${import.meta.env.VITE_API}/user/avatar/${user.username}`} alt={user.username}
            onClick={props.handleClick}/>
     </>
