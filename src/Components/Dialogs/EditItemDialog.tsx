@@ -46,8 +46,7 @@ export function EditItemDialog(props: IEditItemDialog) {
 
   return (
     <>
-      <Modal handleModalClose={props.handleDialogClose}>
-        <div className="mb-4 text-xl">Editing the item.</div>
+      <Modal title="Editing the item" handleModalClose={props.handleDialogClose}>
         <div className="flex flex-col space-y-2">
           <Input
             value={newTitle}

@@ -122,9 +122,8 @@ export function Lists() {
         <NewList handleAddNewListClose={onAddNewListClose} handleAddNewListSubmit={addList} />
       ) : null}
       {showModal ? (
-        <Modal handleModalClose={handleModal}>
+        <Modal title="Editing the list" handleModalClose={handleModal}>
           <div className="flex flex-col space-y-2">
-            <div className="mb-4 text-xl">Editing the list.</div>
             <Input
               handleChange={(v) => setEditTitle(v)}
               placeholder="New list title"
