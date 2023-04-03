@@ -41,7 +41,6 @@ export function Nav() {
               Login
             </Link>
             <Link to="/register">Register</Link>
-            <Link to="#">Test</Link>
           </>
         ) : (
           <Link to="/list">Lists</Link>
